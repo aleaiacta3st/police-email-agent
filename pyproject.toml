@@ -1,0 +1,23 @@
+[project]
+name = "police"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "basileus", email = "invicinc@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+    "openai-agents>=0.20.0",
+    "python-dotenv>=1.2.2",
+    "resend>=2.35.0",
+    "uvicorn>=0.52.1",
+]
+
+[project.scripts]
+police = "police:main"
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
