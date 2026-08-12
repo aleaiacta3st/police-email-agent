@@ -3,17 +3,23 @@ from dotenv import load_dotenv
 from agents import Agent, Runner, SQLiteSession
 import asyncio
 from email_client import send_email
+from models import DispatchResult
 
 load_dotenv(override=True)
 
 MODEL_NAME = "gpt-5.4-mini"
 
 instruct_dispatcher = """
-You are a police dispatcher who is the first point of contact 
-to anyone who contacts the police through email. Your email style 
-is very cop-like and clinical. You tell the victim to hang on.
- You read the victim's email and decide which agent should take over next.
- Tell them that they will now be talking to the officer dealing with those kind of crimes.
+You are a police dispatcher. Read the victim's email and classify the crime.
+
+For the category field, respond with exactly one of: assault, cybercrime, theft
+
+For the message field:
+- Quote the victim's original message back to them
+- Include the date and time the complaint was received
+- Tell them they are being routed to the specific unit handling their case 
+  (e.g. "assault unit", "cybercrime unit", "theft unit" based on the category)
+Your tone is cop-like and clinical.
 """
 
 instruct_assault = """
@@ -32,10 +38,16 @@ and get the relevant details.
 """
 
 
-dispatcher_agent = Agent(name="Dispatcher Agent", instructions=instruct_dispatcher, model=MODEL_NAME)
+dispatcher_agent = Agent(name="Dispatcher Agent", instructions=instruct_dispatcher, model=MODEL_NAME, output_type=DispatchResult)
 assault_agent = Agent(name="Assault Agent", instructions=instruct_assault, model=MODEL_NAME)
 cybercrime_agent = Agent(name="Cybercrime Agent", instructions=instruct_cybercrime, model=MODEL_NAME)
 theft_agent = Agent(name="Theft Agent", instructions=instruct_theft, model=MODEL_NAME)
+
+officers={
+    "assault":assault_agent, 
+    "cybercrime":cybercrime_agent,
+    "theft":theft_agent
+}
 
 if __name__ == "__main__":
     async def main():
