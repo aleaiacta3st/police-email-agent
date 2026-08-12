@@ -37,10 +37,13 @@ def get_actions():
 init_db()
 
 def get_conversations():
-    conn = sqlite3.connect("memory.db")
-    conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT session_id, message_data, created_at FROM agent_messages ORDER BY session_id, id").fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect("memory.db")
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("SELECT session_id, message_data, created_at FROM agent_messages ORDER BY session_id, id").fetchall()
+        conn.close()
+    except sqlite3.OperationalError:
+        return {}
 
     conversations = {}
     for row in rows:
