@@ -92,3 +92,76 @@ tbody td {
 .refresh-btn:hover {
   background-color: #e6b422;
 }
+
+.conversations {
+  margin-top: 48px;
+}
+
+.conversations h2 {
+  color: #d4a017;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.case {
+  margin-bottom: 8px;
+}
+
+.case-header {
+  background-color: #1a2a44;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.case-header:hover {
+  background-color: #1f3352;
+}
+
+.case-messages {
+  border-left: 2px solid #1a2a44;
+  padding: 16px;
+}
+
+.message {
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.message.user {
+  background-color: #1a2a44;
+  border-left: 3px solid #ff4d4d;
+}
+
+.message.assistant {
+  background-color: #111f36;
+  border-left: 3px solid #4da6ff;
+}
+
+.message strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.message.user strong {
+  color: #ff4d4d;
+}
+
+.message.assistant strong {
+  color: #4da6ff;
+}
+
+.message p {
+  font-size: 14px;
+  line-height: 1.6;
+}
