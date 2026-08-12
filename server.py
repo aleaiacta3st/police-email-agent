@@ -8,9 +8,9 @@ from police_agents import dispatcher_agent, assault_agent, cybercrime_agent, the
 from email_client import send_email
 from utils import extract_case_id, clean_subject, extract_category
 from datetime import datetime
-from db import get_actions
 from fastapi.middleware.cors import CORSMiddleware
 from models import CaseContext
+from db import get_actions, get_conversations
 
 
 
@@ -29,6 +29,10 @@ app.add_middleware(
 @app.get("/actions")
 def actions():
     return get_actions()
+
+@app.get("/conversations")
+def conversations():
+    return get_conversations()
 
 
 

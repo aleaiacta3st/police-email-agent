@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+import json
 
 DB_FILE = "cases.db"
 
@@ -34,3 +35,31 @@ def get_actions():
     return [dict(row) for row in rows]
 
 init_db()
+
+def get_conversations():
+    conn = sqlite3.connect("memory.db")
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute("SELECT session_id, message_data, created_at FROM agent_messages ORDER BY session_id, id").fetchall()
+    conn.close()
+
+    conversations = {}
+    for row in rows:
+        session_id = row["session_id"]
+        data = json.loads(row["message_data"])
+        role = data.get("role", "unknown")
+
+        if isinstance(data.get("content"), list):
+            text = data["content"][0]["text"] if data["content"] else ""
+        else:
+            text = data.get("content", "")
+
+        if session_id not in conversations:
+            conversations[session_id] = []
+
+        conversations[session_id].append({
+            "role": role,
+            "content": text,
+            "created_at": row["created_at"]
+        })
+
+    return conversations
