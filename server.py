@@ -10,6 +10,7 @@ from utils import extract_case_id, clean_subject, extract_category
 from datetime import datetime
 from db import get_actions
 from fastapi.middleware.cors import CORSMiddleware
+from models import CaseContext
 
 
 
@@ -56,12 +57,14 @@ async def webhook(request: Request):
         send_email(sender, reply_subject, result.final_output.message, "", message_id)
 
         session = SQLiteSession(case_id, "memory.db")
-        result=await Runner.run(officers[category], input=body, session=session)
+        context = CaseContext(case_id=case_id)
+        result=await Runner.run(officers[category], input=body, session=session, context=context)
         send_email(sender, reply_subject, result.final_output, "", message_id)
     else:
         category = extract_category(subject)
         session = SQLiteSession(case_id, "memory.db")
-        result = await Runner.run(officers[category], input=body, session=session)
+        context = CaseContext(case_id=case_id)
+        result = await Runner.run(officers[category], input=body, session=session, context=context)
         original_subject = clean_subject(subject)
         reply_subject = f"Re: [Case #{case_id}] [{category}] {original_subject}"
         send_email(sender, reply_subject, result.final_output, "", message_id)
