@@ -8,12 +8,26 @@ from police_agents import dispatcher_agent, assault_agent, cybercrime_agent, the
 from email_client import send_email
 from utils import extract_case_id, clean_subject, extract_category
 from datetime import datetime
+from db import get_actions
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 load_dotenv(override=True)
 resend.api_key = os.getenv("RESEND_API_KEY")
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/actions")
+def actions():
+    return get_actions()
 
 
 
