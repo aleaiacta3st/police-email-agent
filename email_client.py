@@ -8,12 +8,15 @@ resend.api_key = os.getenv("RESEND_API_KEY")
 EMAIL_FROM = os.getenv("EMAIL_FROM")
 EMAIL_TO = os.getenv("EMAIL_TO")
 
-def send_email(to, subject, text_body, html_body):
-    resend.Emails.send({
+def send_email(to, subject, text_body, html_body, reply_to_message_id=None):
+    params = {
         "from": EMAIL_FROM,
         "to": to,
         "subject": subject,
         "text": text_body,
         "html": html_body,
-    })
+    }
+    if reply_to_message_id:
+        params["headers"] = {"In-Reply-To": reply_to_message_id}
+    resend.Emails.send(params)
 
