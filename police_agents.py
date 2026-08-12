@@ -4,7 +4,8 @@ from agents import Agent, Runner, SQLiteSession
 import asyncio
 from email_client import send_email
 from models import DispatchResult
-from tools import request_ambulance
+from tools import request_ambulance, freeze_account, alert_nearby_units
+
 
 load_dotenv(override=True)
 
@@ -65,6 +66,9 @@ Once you have all 3, send a closing message summarizing the incident
 and tell them you have everything you need and will contact them if 
 there is any progress in their case.
 
+If the victim says someone is actively accessing their account or money 
+is currently being taken, use the freeze_account tool immediately.
+
 Your tone is professional, calm, and direct.
 """
 
@@ -86,14 +90,17 @@ Once you have all 3, send a closing message summarizing the report
 and tell them you have everything you need and will contact them 
 if there is any progress in their case.
 
+If the theft happened very recently and the suspect might still be nearby, 
+use the alert_nearby_units tool.
+
 Your tone is professional, direct, and reassuring.
 """
 
 
 dispatcher_agent = Agent(name="Dispatcher Agent", instructions=instruct_dispatcher, model=MODEL_NAME, output_type=DispatchResult)
 assault_agent = Agent(name="Assault Agent", instructions=instruct_assault, model=MODEL_NAME, tools=[request_ambulance])
-cybercrime_agent = Agent(name="Cybercrime Agent", instructions=instruct_cybercrime, model=MODEL_NAME)
-theft_agent = Agent(name="Theft Agent", instructions=instruct_theft, model=MODEL_NAME)
+cybercrime_agent = Agent(name="Cybercrime Agent", instructions=instruct_cybercrime, model=MODEL_NAME, tools=[freeze_account])
+theft_agent = Agent(name="Theft Agent", instructions=instruct_theft, model=MODEL_NAME, tools=[alert_nearby_units])
 
 officers={
     "assault":assault_agent, 
