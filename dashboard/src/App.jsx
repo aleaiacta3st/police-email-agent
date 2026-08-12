@@ -6,7 +6,7 @@ function App() {
   const [actions, setActions] = useState([]);
 
   const fetchActions = () => {
-    fetch("http://localhost:8000/actions")
+    fetch("https://web-production-0c0a3.up.railway.app/actions")
       .then((res) => res.json())
       .then((data) => setActions(data));
   };
