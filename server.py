@@ -60,13 +60,13 @@ async def webhook(request: Request):
         reply_subject = f"Re: [Case #{case_id}] [{category}] {original_subject}"
         send_email(sender, reply_subject, result.final_output.message, "", message_id)
 
-        session = SQLiteSession(case_id, "memory.db")
+        session = SQLiteSession(case_id, "/data/memory.db")
         context = CaseContext(case_id=case_id)
         result=await Runner.run(officers[category], input=body, session=session, context=context)
         send_email(sender, reply_subject, result.final_output, "", message_id)
     else:
         category = extract_category(subject)
-        session = SQLiteSession(case_id, "memory.db")
+        session = SQLiteSession(case_id, "/data/memory.db")
         context = CaseContext(case_id=case_id)
         result = await Runner.run(officers[category], input=body, session=session, context=context)
         original_subject = clean_subject(subject)

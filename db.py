@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 import json
 
-DB_FILE = "cases.db"
+DB_FILE = "/data/cases.db"
 
 def init_db():
     conn = sqlite3.connect(DB_FILE)
@@ -38,7 +38,7 @@ init_db()
 
 def get_conversations():
     try:
-        conn = sqlite3.connect("memory.db")
+        conn = sqlite3.connect("/data/memory.db")
         conn.row_factory = sqlite3.Row
         rows = conn.execute("SELECT session_id, message_data, created_at FROM agent_messages ORDER BY session_id, id").fetchall()
         conn.close()

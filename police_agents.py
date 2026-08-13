@@ -111,7 +111,7 @@ officers={
 if __name__ == "__main__":
     async def main():
         victim_email = "invicinc@gmail.com"
-        session = SQLiteSession(victim_email, "memory.db")
+        session = SQLiteSession(victim_email, "/data/memory.db")
         result = await Runner.run(
             dispatcher_agent,
             input="Someone stole my laptop from a coffee shop",
