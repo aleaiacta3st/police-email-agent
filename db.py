@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
 import json
+import re
 
 DB_FILE = "/data/cases.db"
 
@@ -55,6 +56,14 @@ def get_conversations():
             text = data["content"][0]["text"] if data["content"] else ""
         else:
             text = data.get("content", "")
+
+        if not text.strip():
+            continue
+
+        text = re.split(r'On .+ wrote:', text)[0].strip()
+
+        if not text.strip():
+            continue
 
         if session_id not in conversations:
             conversations[session_id] = []
