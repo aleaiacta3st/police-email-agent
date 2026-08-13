@@ -2,8 +2,9 @@ import sqlite3
 from datetime import datetime
 import json
 import re
+import os
 
-DB_FILE = "/data/cases.db"
+DB_FILE = "/data/cases.db" if os.path.isdir("/data") else "cases.db"
 
 def init_db():
     conn = sqlite3.connect(DB_FILE)
